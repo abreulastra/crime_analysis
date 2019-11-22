@@ -1,3 +1,5 @@
 # crime_analysis
-The goal of this project is to get data about crime in a major city, visualize it, and identify patterns. 
-The city will probably be SF
+The goal of this project is to get data about crime in LA, visualize it, and identify patterns. 
+
+# Data Source
+https://www.kaggle.com/cityofLA/los-angeles-crime-arrest-data#arrest-data-from-2010-to-present.csv
