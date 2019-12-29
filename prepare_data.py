@@ -30,13 +30,13 @@ arr = pd.read_csv(path + 'arrest-data-from-2010-to-present.csv')
 cri['Date Occurred'] = pd.to_datetime(cri['Date Occurred'])
 #cri.sort_values(cri['Date Occurred'], inplace = True)
 latest_cri = cri['Date Occurred'].max()
-cutt_off_cri = latest_cri + timedelta(days=-365)
+cutt_off_cri = latest_cri + timedelta(days=-180)
 cri = cri[cri['Date Occurred'] > cutt_off_cri]
 
 arr['Arrest Date'] = pd.to_datetime(arr['Arrest Date'])
 #arr.sort_values(arr['Arrest Date'], inplace = True)
 latest_arr = arr['Arrest Date'].max()
-cutt_off_arr = latest_arr + timedelta(days=-365)
+cutt_off_arr = latest_arr + timedelta(days=-180)
 arr = arr[arr['Arrest Date'] > cutt_off_arr]
 
 cri.to_csv(path + 'crime-data.csv')
