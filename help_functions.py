@@ -27,6 +27,9 @@ def prepare_data(df):
     
     if 'Date Occurred' in df.columns:
         df['date'] = pd.to_datetime(df['Date Occurred'])
+        df['date_reported'] = pd.to_datetime(df['Date Reported'])
+        df['week_reported'] = df['date_reported'].dt.strftime('%Y-w%U')
+        df['weekday_reported'] = df['date_reported'].dt.weekday_name
         
         df['crime_description_recoded'] = df['Crime Code Description']
         
