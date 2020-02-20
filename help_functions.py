@@ -28,13 +28,16 @@ def prepare_data(df):
     if 'Date Occurred' in df.columns:
         df['date'] = pd.to_datetime(df['Date Occurred'])
         
+        
         df['crime_description_recoded'] = df['Crime Code Description']
         
-        df['car_theft'] = df['Crime Code Description'].str.contains('|'.join(car_theft_search_for_list))
-        df.loc[df.car_theft, 'crime_description_recoded'] = 'Vehicle Theft'
+        
         
         df['larceny'] = df['Crime Code Description'].str.contains('|'.join(theft_search_for_list))
         df.loc[df.larceny, 'crime_description_recoded'] = 'Larceny'
+        
+        df['car_theft'] = df['Crime Code Description'].str.contains('|'.join(car_theft_search_for_list))
+        df.loc[df.car_theft, 'crime_description_recoded'] = 'Vehicle Theft'
         
         df['robbery'] = df['Crime Code Description'].str.contains('|'.join(robbery_search_for_list))
         df.loc[df.robbery, 'crime_description_recoded'] = 'Robbery'
