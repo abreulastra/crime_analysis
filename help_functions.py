@@ -20,17 +20,16 @@ def prepare_data(df):
     robbery_search_for_list = ['ROBBERY']
     burglary_search_for_list = ['burglary', 'BURGLARY']
     o_assault_search_for_list = ['BATTERY', 'ASSAULT','CRIMINAL THREATS']
-    a_assault_searh_for_list = ['AGGRAVATED ASSAULT']
+    a_assault_searh_for_list = ['AGGRAVATED ASSAULT', 'BRANDISH']
     drugs_search_for_list = ['DRUG', 'NARCOTICS', 'DRUGS', 'NARCOTICS']
     violations_search_for_list = ['TRESPASSING', 'VANDALISM', 'VIOLATION', 'PAROLE', 'MUNICIPAL CODE']
-    
+    sex_search_for_list = ['LEWD']
     
     if 'Date Occurred' in df.columns:
         df['date'] = pd.to_datetime(df['Date Occurred'])
         
         
         df['crime_description_recoded'] = df['Crime Code Description']
-        
         
         
         df['larceny'] = df['Crime Code Description'].str.contains('|'.join(theft_search_for_list))
@@ -52,10 +51,14 @@ def prepare_data(df):
         df.loc[df.aggravated_assault, 'crime_description_recoded'] = 'Aggravated Assault'
         
         df['drugs'] = df['Crime Code Description'].str.contains('|'.join(drugs_search_for_list))
-        df.loc[df.drugs, 'Crime Code Description'] = 'Narcotic Drug Laws'
+        df.loc[df.drugs, 'crime_description_recoded'] = 'Narcotic Drug Laws'
         
         df['violation'] = df['Crime Code Description'].str.contains('|'.join(violations_search_for_list))
-        df.loc[df.violation, 'Crime Code Description'] = 'Miscellaneous Other Violations'
+        df.loc[df.violation, 'crime_description_recoded'] = 'Miscellaneous Other Violations'
+        
+        df['sex'] = df['Crime Code Description'].str.contains('|'.join(sex_search_for_list))
+        df.loc[df.sex, 'crime_description_recoded'] = 'Sex (except rape/prst)'
+        
         
     elif 'Arrest Date' in df.columns:
         df['date'] = pd.to_datetime(df['Arrest Date'])
