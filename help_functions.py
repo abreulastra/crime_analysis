@@ -20,17 +20,22 @@ def prepare_data(df):
     robbery_search_for_list = ['ROBBERY']
     burglary_search_for_list = ['burglary', 'BURGLARY']
     o_assault_search_for_list = ['BATTERY', 'ASSAULT','CRIMINAL THREATS']
-    a_assault_searh_for_list = ['AGGRAVATED ASSAULT', 'BRANDISH']
+    a_assault_searh_for_list = ['AGGRAVATED ASSAULT', 'BRANDISH', 'ARSON']
     drugs_search_for_list = ['DRUG', 'NARCOTICS', 'DRUGS', 'NARCOTICS']
-    violations_search_for_list = ['TRESPASSING', 'VANDALISM', 'VIOLATION', 'PAROLE', 'MUNICIPAL CODE']
-    sex_search_for_list = ['LEWD']
+    violations_search_for_list = ['KIDNAPPING','EXTORTION','TRESPASSING', 'VANDALISM', 'VIOLATION', 'PAROLE', 'MUNICIPAL CODE', 'CONTEMPT OF COURT']
+    sex_search_for_list = ['LEWD', 'INDECENT EXPOSURE', 'SEX']
+    rape_search_for_list = ['RAPE']
+    weapon_search_for_list = ['DISCHARGE FIREARMS/SHOTS FIRED']
     
     if 'Date Occurred' in df.columns:
         df['date'] = pd.to_datetime(df['Date Occurred'])
-        
+        df['victim_female'] = [1 if x == 'F' else 0 for x in df['Victim Sex']]
+        df['victim_hispanic'] = [1 if x == 'H' else 0 for x in df['Victim Descent']]
+        df['victim_white'] = [1 if x == 'W' else 0 for x in df['Victim Descent']]
+        df['victim_black'] = [1 if x == 'B' else 0 for x in df['Victim Descent']]
+        df['victim_asian'] = [1 if x == 'C' else 0 for x in df['Victim Descent']]
         
         df['crime_description_recoded'] = df['Crime Code Description']
-        
         
         df['larceny'] = df['Crime Code Description'].str.contains('|'.join(theft_search_for_list))
         df.loc[df.larceny, 'crime_description_recoded'] = 'Larceny'
@@ -59,13 +64,27 @@ def prepare_data(df):
         df['sex'] = df['Crime Code Description'].str.contains('|'.join(sex_search_for_list))
         df.loc[df.sex, 'crime_description_recoded'] = 'Sex (except rape/prst)'
         
+        df['rape'] = df['Crime Code Description'].str.contains('|'.join(rape_search_for_list))
+        df.loc[df.rape, 'crime_description_recoded'] = 'Rape'
+        
+        df['weapon'] = df['Crime Code Description'].str.contains('|'.join(weapon_search_for_list))
+        df.loc[df.weapon, 'crime_description_recoded'] = 'Weapon'
         
     elif 'Arrest Date' in df.columns:
         df['date'] = pd.to_datetime(df['Arrest Date'])
+        df = df.dropna(subset=['Charge Description'])
     else:
         print("Did not find 'Date Occurred' or 'Arrest Date' in variables")
         return df
     
     df['week'] = df['date'].dt.strftime('%Y-w%U')
+    df['month'] = df['date'].dt.month
     df['weekday'] = df['date'].dt.weekday_name
+    
+    df = pd.concat([df,pd.get_dummies(df['weekday'])], axis=1)
+    df = pd.concat([df,pd.get_dummies(df['month'], prefix = 'month')], axis=1)
+    df = pd.concat([df,pd.get_dummies(df['Area Name'])], axis=1)
+    
+    df = df.drop(['Unnamed: 0'], axis=1)
+    
     return df
