@@ -4,7 +4,7 @@
 Created on Sun Dec 29 14:51:15 2019
 
 This program's goal is to data from the LA police deparment about crime and
-police arrests, and keep the last year of data available.
+police arrests, and keep the last six months of data available.
 The original files include ten years of data, which introduces two issues for
 the analysis: a )Inconsistencies between the early and more recent years, and 
 the size of the files (+700 MB)
