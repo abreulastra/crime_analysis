@@ -10,12 +10,11 @@ To understand the crime landscape in LA by answering the following questions.
 3. **crime_patterns_LA.ipynb**, is a Jupyter notebook that proposes three questions to understand the crime dynamics in LA, and provides answers with data. 
 
 # Libraries
-#We start by importing our dependencies
-pandas
-matplotlib.pyplot
-seaborn
-from sklearn.preprocessing, StandardScaler
-from sklearn.decomposition, PCA
+* pandas
+* matplotlib.pyplot
+* seaborn
+* from sklearn.preprocessing, StandardScaler
+* from sklearn.decomposition, PCA
 
 # Data Source
 https://www.kaggle.com/cityofLA/los-angeles-crime-arrest-data#arrest-data-from-2010-to-present.csv
